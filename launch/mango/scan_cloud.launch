@@ -2,6 +2,7 @@
     <!-- use_sim_time?! T/F  -->
     <arg name="sim_time" value="true"/>
     <arg name="use_t265" value="false"/>
+    <arg name="external_odom" value="true"/>
     <!-- start l515 -->
     <param unless="$(arg sim_time)" name="/l515/motion_module/global_time_enabled" value="true" />
     <param unless="$(arg sim_time)" name="/l515/rgb_camera/global_time_enabled" value="true" />
@@ -39,17 +40,6 @@
     <node if="$(arg use_t265)" pkg="tf" type="static_transform_publisher" name="static_tf" args="0 0 0.05 0 0 0 t265_link l515_link 10" />
     <node if="$(arg sim_time)" pkg="tf" type="static_transform_publisher" name="static_tf_1" args="0 0 0 0 0 0 t265_pose_frame t265_link 10" />
 
-    <param if="$(arg use_t265)" name="/t265/tracking_module/enable_mapping" value="false"/>
-    <include if="$(arg use_t265)" file="$(find realsense2_camera)/launch/rs_t265.launch">
-        <arg name="serial_no" value="T265_SERIAL_NUMBER"/>
-        <arg name="camera" value="t265"/>
-        <arg name="unite_imu_method" value="linear_interpolation"/>
-        <arg name="enable_fisheye1" value="true"/>
-        <arg name="enable_fisheye2" value="true"/>
-        <arg name="enable_sync" value="true"/>
-        <arg name="publish_odom_tf" value="true"/>          
-    </include>
-
     <arg name="rtabmapviz"    default="false"/>
     <arg name="scan_rate"    default="30"/>
     <arg name="rate"            value="2"/>
@@ -81,6 +71,7 @@
         <param name="publish_tf"          type="bool"   value="true"/>
         <remap from="imu"           to="$(arg imu_topic)"/>
         <param if="$(arg use_t265)" name="guess_frame_id" value="t265_odom_frame"/>
+        <param if="$(arg external_odom)" name="guess_frame_id" value="base_footprint"/>
         <!-- <remap     if="$(arg scan_cloud_filtered)" from="cloud" to="odom_filtered_input_scan"/> -->
         <!-- <remap unless="$(arg scan_cloud_filtered)" from="cloud" to="$(arg scan_cloud_topic)"/> -->
     
@@ -136,6 +127,11 @@
         <param unless="$(arg use_t265)" name="subscribe_rgb" value="false"/>
         <remap if="$(arg use_t265)" from="rgb/image"   to="/l515/color/image_raw" />
         <remap if="$(arg use_t265)" from="rgb/camera_info" to="/l515/color/camera_info"/>
+
+        <param if="$(arg external_odom)" name="subscribe_rgb" value="true"/>
+        <param unless="$(arg external_odom)" name="subscribe_rgb" value="false"/>
+        <remap if="$(arg external_odom)" from="rgb/image"   to="/camera/color/image_raw" />
+        <remap if="$(arg external_odom)" from="rgb/camera_info" to="/camera/color/camera_info"/>
         
         <!-- RTAB-Map's parameters -->
         <param name="Rtabmap/DetectionRate"          type="string" value="$(arg rate)"/>  

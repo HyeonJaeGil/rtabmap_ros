@@ -20,7 +20,7 @@
     <!-- SLAM (robot side) -->
     <!-- args: "delete_db_on_start" and "udebug" -->
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg rtabmap_args)">
-      <param name="frame_id"           type="string" value="base_footprint"/>
+      <param name="frame_id"           type="string" value="base_link"/>
       <param name="wait_for_transform" type="bool" value="true"/>
     
       <param name="subscribe_depth" type="bool" value="true"/>
