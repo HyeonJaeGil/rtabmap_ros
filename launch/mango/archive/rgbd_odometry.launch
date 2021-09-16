@@ -1,0 +1,51 @@
+
+<launch>
+
+   
+   <!-- Fixed frame id, you may set "base_link" or "base_footprint" if they are published -->
+   <arg name="frame_id" default="base_link"/>
+  
+   <!-- Choose visualization -->
+   <arg name="local_bundle" default="true" />
+ 
+   <!-- <param name="use_sim_time" type="bool" value="True"/> -->
+
+   <!-- slightly increase default parameters for larger images (qhd=720p) -->
+   <arg name="gftt_block_size" default="5" /> 
+   <arg name="gftt_min_distance" default="5" /> 
+        
+  <group ns="rtabmap">
+  
+    <!-- Odometry -->
+    <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="screen">
+      <remap from="rgb/image" to="/camera/color/image_raw"/>
+      <remap from="depth/image" to="/camera/aligned_depth_to_color/image_raw"/>
+      <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+      <remap from="odom" to="/rgbd_odom"/>
+
+      <param name="frame_id" type="string" value="$(arg frame_id)"/>
+      <param name="odom_frame_id"   type="string" value="odom"/>
+      <param name="approx_sync" type="bool" value="false"/>
+	  
+      <param unless="$(arg local_bundle)" name="OdomF2M/BundleAdjustment" type="string" value="0"/>
+
+
+      <param name="GFTT/BlockSize" type="string" value="$(arg gftt_block_size)"/>
+      <param name="GFTT/MinDistance" type="string" value="$(arg gftt_min_distance)"/>
+
+      <param name="Odom/Strategy"      type="string" value="1"/> <!-- 0=Frame-to-Map, 1=Frame=to=Frame -->
+      <param name="Vis/EstimationType" type="string" value="1"/> <!-- 0=3D->3D 1=3D->2D (PnP) -->
+      <param name="Vis/MaxDepth"       type="string" value="0"/>
+      <param name="Odom/GuessMotion" type="string" value="true"/>
+      <param name="Vis/MinInliers"     type="string" value="10"/>
+      <param unless="$(arg local_bundle)" name="OdomF2M/BundleAdjustment" type="string" value="0"/>
+      <param name="OdomF2M/MaxSize"    type="string" value="1000"/> 
+      <param name="GFTT/MinDistance"   type="string" value="10"/>
+      <param name="GFTT/QualityLevel"  type="string" value="0.00001"/> 
+      <param name="GFTT/QualityLevel"  type="string" value="0.00001"/>
+    </node>
+    
+  </group>
+  
+
+</launch>

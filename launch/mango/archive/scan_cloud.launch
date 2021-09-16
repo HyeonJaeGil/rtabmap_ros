@@ -81,7 +81,7 @@
     
         <!-- ICP parameters -->
         <param name="Icp/PointToPlane"        type="string" value="true"/>
-        <param name="Icp/Iterations"          type="string" value="10"/>
+        <param name="Icp/Iterations"          type="string" value="15"/>
         <param name="Icp/VoxelSize"           type="string" value="$(arg voxel_size)"/>
         <param name="Icp/DownsamplingStep"    type="string" value="1"/>
         <param name="Icp/Epsilon"             type="string" value="0.0001"/>
@@ -139,7 +139,7 @@
         
         <!-- RTAB-Map's parameters -->
         <param name="Rtabmap/DetectionRate"          type="string" value="$(arg rate)"/>  
-        <param name="RGBD/NeighborLinkRefining"      type="string" value="false"/>
+        <param name="RGBD/NeighborLinkRefining"      type="string" value="true"/>
         <param name="RGBD/ProximityBySpace"          type="string" value="true"/>
         <param name="RGBD/ProximityMaxGraphDepth"    type="string" value="0"/>
         <param name="RGBD/ProximityPathMaxNeighbors" type="string" value="1"/>
@@ -148,6 +148,7 @@
         <param name="Mem/NotLinkedNodesKept"         type="string" value="false"/>
         <param name="Mem/STMSize"                    type="string" value="30"/>
         
+        <param name="Reg/Force3DoF"                  type="string" value="true"/>  <!-- 2D SLAM -->
         <param name="Reg/Strategy"                   type="string" value="2"/> 
         <param name="Grid/CellSize"                  type="string" value="0.1"/>
         <param name="Grid/RangeMax"                  type="string" value="20"/>

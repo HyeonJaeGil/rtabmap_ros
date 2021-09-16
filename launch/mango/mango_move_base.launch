@@ -1,0 +1,27 @@
+<launch>
+   <group ns="planner">
+      <remap from="scan" to="/scan"/>
+      <remap from="obstacles_cloud" to="/obstacles_cloud"/>
+      <remap from="ground_cloud" to="/ground_cloud"/>
+      <remap from="map" to="/map"/>
+      <remap from="odom" to="/rtabmap/odom"/>
+      <remap from="move_base_simple/goal" to="/move_base_simple/goal"/>
+      <remap from="initial_pose" to="/initial_pose"/>
+      <remap from="cmd_vel" to="/cmd_vel"/>
+
+      <arg name="observation_sources" value="laser_scan_sensor point_cloud_sensorA point_cloud_sensorB"/>   
+
+      <node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen">
+         <param name="base_global_planner" value="navfn/NavfnROS"/>
+         <rosparam file="$(find rtabmap_ros)/launch/mango/config/costmap_common_params_2d.yaml" command="load" ns="global_costmap" />
+         <rosparam file="$(find rtabmap_ros)/launch/mango/config/costmap_common_params_2d.yaml" command="load" ns="local_costmap" />
+         <rosparam file="$(find rtabmap_ros)/launch/mango/config/local_costmap_params.yaml" command="load" ns="local_costmap" />
+         <rosparam file="$(find rtabmap_ros)/launch/mango/config/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+         <rosparam file="$(find rtabmap_ros)/launch/mango/config/base_local_planner_params.yaml" command="load" />
+         <param name="global_costmap/obstacle_layer/observation_sources" value="$(arg observation_sources)"/>
+         <param name="local_costmap/obstacle_layer/observation_sources" value="$(arg observation_sources)"/>
+      </node>
+      
+     <param name="cmd_vel/abtr_priority" value="10"/>
+  </group>
+</launch>
