@@ -11,6 +11,9 @@
 
       <arg name="observation_sources" value="laser_scan_sensor point_cloud_sensorA point_cloud_sensorB"/>   
 
+      <!-- <include file="$(find mango_navigation)/launch/move_basic.launch">
+      </include> -->
+      
       <node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen">
          <param name="base_global_planner" value="navfn/NavfnROS"/>
          <rosparam file="$(find rtabmap_ros)/launch/mango/config/costmap_common_params_2d.yaml" command="load" ns="global_costmap" />

@@ -12,7 +12,8 @@ obstacle_layer:
   # min_obstacle_height: -2.0
   track_unknown_space: true
 
-  observation_sources: laser_scan_sensor point_cloud_sensorA point_cloud_sensorB
+  # observation_sources: laser_scan_sensor point_cloud_sensorA point_cloud_sensorB
+  observation_sources: point_cloud_sensorA point_cloud_sensorB
 
   laser_scan_sensor: {
     data_type: LaserScan,
