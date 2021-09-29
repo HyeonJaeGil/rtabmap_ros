@@ -83,7 +83,8 @@
   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find rtabmap_ros)/launch/mango/config/mango_navigation.rviz" output="screen"/>
 
   <!-- move base -->
-  <include if="$(arg move_base)" file="$(find rtabmap_ros)/launch/mango/mango_move_base.launch"/>
+  <include if    ="$(arg move_base)" file="$(find rtabmap_ros)/launch/mango/mango_move_base.launch"/>
+  <include unless="$(arg move_base)" file="$(find rtabmap_ros)/launch/mango/mango_move_basic.launch"/>
 
   <!-- obstacle cloud -->
   <include file="$(find rtabmap_ros)/launch/mango/find_obstacle.launch"/>
